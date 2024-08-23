@@ -6,20 +6,32 @@ import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 
 export default function Home() {
   const [openIndexes, setOpenIndexes] = useState([]);
+  const [toggleInd, setToggleInd] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const toggle = (index) => {
-    if (openIndexes.includes(index)) {
-      setOpenIndexes(openIndexes.filter((i) => i !== index));
+    if (toggleInd === true) {
+      if (openIndexes.includes(index)) {
+        setOpenIndexes(openIndexes.filter((i) => i !== index));
+      } else {
+        setOpenIndexes([...openIndexes, index]);
+      }
     } else {
-      setOpenIndexes([...openIndexes, index]);
+      if (index === open) {
+        setOpen(null);
+      } else {
+        setOpen(index);
+      }
     }
   };
 
   const toggleAll = () => {
     if (openIndexes.length === faqInput.length) {
+      setToggleInd(false);
       setOpenIndexes([]);
     } else {
-      setOpenIndexes(faqInput.map((_, index) => index));
+      setToggleInd(true);
+      setOpenIndexes(faqInput.map((_, index) => _.id));
     }
   };
 
@@ -48,8 +60,9 @@ export default function Home() {
             {faqInput.map((faqans, index) => (
               <FaqsItem
                 key={index}
-                open={openIndexes.includes(index)}
-                toggle={() => toggle(index)}
+                openAll={openIndexes.includes(faqans.id)}
+                open={open === faqans.id}
+                toggle={() => toggle(faqans.id)}
                 question={faqans.question}
                 answer={faqans.answer}
               />
