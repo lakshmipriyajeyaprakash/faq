@@ -49,10 +49,12 @@ const faq = () => {
           Frequently Asked Questions
         </h1>
         <div className="flex items-center justify-center ">
-          <input type="text" placeholder="Search..."></input>
-          <button class="mt-1 mr-2 bg-gray-600 text-white">
+          <div className="relative w-60">
+          <input type="text" className="w-full px-4 py-2 rounded-full" placeholder="Search..."></input>
+          <button class="absolute right-0 top-0 mt-1 mr-2 bg-gray-500 text-white p-2 rounded-full focus:outline-none">
             <FaArrowRight />
-          </button>
+            </button>
+            </div>
         </div>
         <div className="px-5 py-5 flex justify-center">
           <div className="w-[600px]">
