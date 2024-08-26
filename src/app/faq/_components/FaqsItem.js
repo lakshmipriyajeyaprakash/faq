@@ -10,7 +10,13 @@ const FaqsItem = ({ toggle, open, question, answer, openAll }) => {
         onClick={toggle}
       >
         <p className="flex-1">{question}</p>
-        <span>{open || openAll ? <FaChevronUp /> : <FaChevronDown />}</span>
+        <span>
+          {open || openAll ? (
+            <FaChevronUp className="hover:cursor-pointer" />
+          ) : (
+            <FaChevronDown />
+          )}
+        </span>
       </div>
       <div className="px-5 flex items-center justify-between">
         {open || openAll ? (
