@@ -1,29 +1,52 @@
-'use client'
+"use client";
 import React, { useState } from "react";
-import faqInput from '../faqData/faqInput';
-import FaqsItem from './_components/FaqsItem';
 import { FaChevronUp, FaChevronDown } from "react-icons/fa";
 import { FaArrowRight } from "react-icons/fa6";
-import { useRouter } from 'next/navigation';
-import { useSearchParams } from 'next/navigation';
+import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 const faq = () => {
+  /* FAQ Inputs */
+  const faqInput = [
+    {
+      id: 1,
+      question: "What is Next.js?",
+      answer: "Next.js is a React framework for building web applications.",
+    },
+    {
+      id: 2,
+      question: "How does Tailwind CSS work?",
+      answer:
+        "Tailwind CSS is a utility-first CSS framework for rapidly building custom designs.",
+    },
+    {
+      id: 3,
+      question: "What is the purpose of getStaticProps?",
+      answer: "getStaticProps is used to fetch data at build time in Next.js.",
+    },
+  ];
+
+  /* Route Variables */
   const router = useRouter();
   const searchParams = useSearchParams();
+
+  /* Hooks */
   const [openIndexes, setOpenIndexes] = useState([]);
   const [toggleInd, setToggleInd] = useState(false);
   const [open, setOpen] = useState(null);
-  const [inputVal, setInputVal] = useState(!!searchParams.get("search") ? searchParams.get("search") : '');
-  
+  const [inputVal, setInputVal] = useState(
+    !!searchParams.get("search") ? searchParams.get("search") : ""
+  );
+
   const findWords = (e) => {
     e.preventDefault();
     setInputVal(e.target.value);
   };
- 
+
   const handleSubmit = (e) => {
     e.preventDefault();
     router.push(`/faq?search=${inputVal}`);
-  }
+  };
 
   const toggle = (index) => {
     if (toggleInd) {
@@ -48,7 +71,7 @@ const faq = () => {
   };
 
   // FAQs Filter based on the search input
-  const filteredFaqs = faqInput.filter(faqans =>
+  const filteredFaqs = faqInput.filter((faqans) =>
     faqans.question.toLowerCase().includes(inputVal.toLowerCase())
   );
 
@@ -63,17 +86,20 @@ const faq = () => {
       <div className="flex items-center justify-center cursor-pointer">
         <div className="relative w-60">
           <form onSubmit={handleSubmit}>
-          <input 
-            type="text" 
-            className="w-full px-4 py-2 rounded-full box-border border border-gray-200 focus:shadow-md transition-all duration-300 delay-150" 
-            placeholder="Search..." 
-            value={inputVal} 
-            onChange={findWords}
-          />
-          <button type='submit' className="absolute right-0 top-0 mt-1 mr-2 bg-gray-500 text-white p-2 rounded-full focus:outline-none">
-            <FaArrowRight />
+            <input
+              type="text"
+              className="w-full px-4 py-2 rounded-full box-border border border-gray-200 focus:shadow-md transition-all duration-300 delay-150"
+              placeholder="Search..."
+              value={inputVal}
+              onChange={findWords}
+            />
+            <button
+              type="submit"
+              className="absolute right-0 top-0 mt-1 mr-2 bg-gray-500 text-white p-2 rounded-full focus:outline-none"
+            >
+              <FaArrowRight />
             </button>
-            </form>
+          </form>
         </div>
       </div>
       <div className="px-5 py-5 flex justify-center">
@@ -95,25 +121,33 @@ const faq = () => {
           <div className="h-max border rounded-lg overflow-hidden ">
             {faqsToDisplay.map((faqans, index) => (
               <div key={index} className="border-b last:border-b-0">
-              <div
-                className={`px-5 py-4 flex items-center justify-between hover:cursor-pointer ${
-                  open === faqans.id || openIndexes.includes(faqans.id) ? "bg-gray-100 shadow-md" : ""
-                }`}
-                onClick={() => toggle(faqans.id)}
-              >
-                <p className="flex-1">{faqans.question}</p>
-                <span>{open === faqans.id || openIndexes.includes(faqans.id) ? <FaChevronUp /> : <FaChevronDown />}</span>
+                <div
+                  className={`px-5 py-4 flex items-center justify-between hover:cursor-pointer ${
+                    open === faqans.id || openIndexes.includes(faqans.id)
+                      ? "bg-gray-100 shadow-md"
+                      : ""
+                  }`}
+                  onClick={() => toggle(faqans.id)}
+                >
+                  <p className="flex-1">{faqans.question}</p>
+                  <span>
+                    {open === faqans.id || openIndexes.includes(faqans.id) ? (
+                      <FaChevronUp />
+                    ) : (
+                      <FaChevronDown />
+                    )}
+                  </span>
+                </div>
+                <div className="px-5 flex items-center justify-between">
+                  {open === faqans.id || openIndexes.includes(faqans.id) ? (
+                    <div className="">
+                      <p className="flex-1 py-4 ">{faqans.answer}</p>
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                </div>
               </div>
-              <div className="px-5 flex items-center justify-between">
-                {open === faqans.id || openIndexes.includes(faqans.id) ? (
-                  <div className="">
-                    <p className="flex-1 py-4 ">{faqans.answer}</p>
-                  </div>
-                ) : (
-                  ""
-                )}
-              </div>
-            </div>
             ))}
           </div>
         </div>
